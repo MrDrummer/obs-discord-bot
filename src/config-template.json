@@ -1,0 +1,10 @@
+{
+  "discord": {
+    "token": "discord token here"
+  },
+  "obs": {
+    "hostname": "localhost",
+    "port": "4444",
+    "password": "password as set within the OBS websocket plugin"
+  }
+}

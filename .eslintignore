@@ -1,0 +1,8 @@
+*/*.d.ts
+*.js
+lib/
+dist/
+
+.yarn/
+
+.pnp.js
