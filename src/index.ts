@@ -1,5 +1,8 @@
 import startObs from "./obs"
-import startDiscord from "./discord"
+import startDiscord, { getGuildTextChannel } from "./discord"
+import config from "./config.json"
+
+const serverName = config.meta.name
 
 const start = async (): Promise<void> => {
   const obs = await startObs()
@@ -12,6 +15,9 @@ const start = async (): Promise<void> => {
 
   const validScenes = scenes.scenes.map(s => s.name)
 
+  const channel = await getGuildTextChannel(config.discord.channels.log)
+  channel?.send(`[${ serverName }] started with **${ validScenes.length }** scenes.`)
+
   // console.log("Scene Options :", validScenes)
 
   bot.on("messageCreate", async message => {
@@ -19,11 +25,15 @@ const start = async (): Promise<void> => {
     if (validScenes.includes(scene)) {
       await setScene(scene).catch(console.error)
       message.channel.send(`Set the scene to ${ scene }`)
+
+      // Audit log for other discord input methods
+      // const logChannel = await getGuildTextChannel(config.discord.channels.log)
+      // logChannel?.send(`${ message.member?.displayName } set the scene for ${ serverName } to ${ scene }`)
+
     } else if (scene.startsWith("!scenes")) {
       message.channel.send(`Valid scenes are as follows:\n${ validScenes.join("\n") }`)
-    } else if (scene.startsWith("!collection")) {
-      const collections = await obs.send("ListSceneCollections")
-      message.channel.send(`Valid collections are as follows:\n${ collections["scene-collections"].map(c => c["sc-name"]).join("\n") }`)
+    } else if (scene.startsWith("!ck")) {
+      message.channel.send(`SBLControl on **${ serverName }** is listening.`)
     }
   })
 
