@@ -18,6 +18,7 @@ const start = async (): Promise<void> => {
     const scene = message.content
     if (validScenes.includes(scene)) {
       await setScene(scene).catch(console.error)
+      message.channel.send(`Set the scene to ${ scene }`)
     } else if (scene.startsWith("!scenes")) {
       message.channel.send(`Valid scenes are as follows:\n${ validScenes.join("\n") }`)
     } else if (scene.startsWith("!collection")) {
