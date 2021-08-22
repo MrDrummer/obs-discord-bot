@@ -1,5 +1,5 @@
 # Set up
-1. Fork this repo with git: `https://github.com/MrDrummer/obs-discord-bot.git`
+1. Clone this repo with git: `https://github.com/MrDrummer/obs-discord-bot.git`
 2. Assuming you don't already have node.js installed, download and install [NVM For Windows](https://github.com/coreybutler/nvm-windows). This allows easy switching between node.js versions. It must be Node 16 or greater.
 3. Open a command prompt, run `nvm install 16.7.0` and then `nvm use 16.7.0`. Validate it switched with `node -v` and it should respond with `16.7.0` (cmd prompt restart may be needed?)
 4. Run `npm install -g yarn typescript pm2`
