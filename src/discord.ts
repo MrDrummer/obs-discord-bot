@@ -1,6 +1,6 @@
-import { Client, Intents } from "discord.js"
+import { Client, Intents, Channel, TextChannel } from "discord.js"
 import config from "./config.json"
-
+let botClient: Client
 export default (): Promise<Client> => {
   return new Promise((resolve, reject) => {
     let connected = false
@@ -16,7 +16,8 @@ export default (): Promise<Client> => {
         ]
       },
       partials: [
-        "MESSAGE"
+        "MESSAGE",
+        "CHANNEL"
       ]
     })
     client.login(config.discord.token)
@@ -36,4 +37,14 @@ export default (): Promise<Client> => {
       console.error("Discord had an error:", e)
     })
   })
+}
+
+export const getGuildTextChannel = async (channelId: string): Promise<(Channel & TextChannel) | null> => {
+  const channel = await botClient.channels.fetch(channelId)
+  if (channel?.type === "GUILD_TEXT" && channel.isText() && (channel instanceof TextChannel)) {
+    return channel
+  } else {
+    console.log(`Channel ID ${ channelId } isn't a Discord Guild text channel.`)
+    return null
+  }
 }
