@@ -113,3 +113,4 @@ tmp
 .vscode
 
 config.json
+secrets.json
