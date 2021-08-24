@@ -1,12 +1,26 @@
 import { Client, Intents, Channel, TextChannel } from "discord.js"
-import config from "./config.json"
+import { REST } from "@discordjs/rest"
+import { APIApplicationCommandOption, Routes } from "discord-api-types/v9"
+import { secrets, config } from "./config"
+import { SlashCommandBuilder } from "@discordjs/builders"
 let botClient: Client
+
+interface BuiltCommand {
+  name: string
+  description: string
+  options: APIApplicationCommandOption[]
+}
+
+const rest = new REST({ version: "9" }).setToken(secrets.discord.token)
+
 export default (): Promise<Client> => {
   return new Promise((resolve, reject) => {
     let connected = false
     const client = new Client({
-      intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES],
-
+      intents: [
+        Intents.FLAGS.GUILDS,
+        Intents.FLAGS.GUILD_MESSAGES
+      ],
       presence: {
         activities: [
           {
@@ -20,15 +34,16 @@ export default (): Promise<Client> => {
         "CHANNEL"
       ]
     })
-    client.login(config.discord.token)
+    client.login(secrets.discord.token)
 
     const timeout = setTimeout(function () {
       if (!connected) reject("Aborted connection to Discord.")
     }, 20000)
-    client.on("ready", () => {
+    client.on("ready", async () => {
       console.log(`Logged in as "${ client.user?.username }"!`)
       botClient = client
-      connected = false
+      await refreshSlashCommands()
+      connected = true
       clearTimeout(timeout)
       resolve(client)
     })
@@ -47,4 +62,52 @@ export const getGuildTextChannel = async (channelId: string): Promise<(Channel &
     console.log(`Channel ID ${ channelId } isn't a Discord Guild text channel.`)
     return null
   }
+}
+// console.log("config :", config)
+export const buildSlashCommands = (disabledCameras?: string[]): BuiltCommand[] => {
+  const sceneBuilder = new SlashCommandBuilder()
+    .setName("sc")
+    .setDescription("Set the active scene.");
+  [...config.sources, ...config.layouts].forEach(c => {
+    if (disabledCameras && disabledCameras.includes(c.scene)) return
+    sceneBuilder.addStringOption(sc => {
+      return sc.setName(c.arg)
+        .setDescription(c.desc)
+    })
+  })
+  const slotBuilder = new SlashCommandBuilder()
+    .setName("slot")
+    .setDescription("Changes a slots's source.")
+  Object.entries(config.slots).forEach(([key]) => {
+    slotBuilder
+      // slotBuilder.addSubcommand(sc => {
+      //   return sc.setName(key)
+      .setDescription(`Interacts with the ${ key } slot.`)
+      .addStringOption(option => {
+        const subcommand = option.setName(key)
+          .setDescription("The source to assign to the slot.")
+        config.sources.forEach(s => {
+          subcommand.addChoice(s.arg, s.scene)
+        })
+        return subcommand
+      })
+    // })
+  })
+  const pingCommand = new SlashCommandBuilder()
+    .setName("ping")
+    .setDescription("Returns ping time")
+  return [sceneBuilder, slotBuilder, pingCommand].map(c => c.toJSON())
+}
+
+export const setSlashCommands = async (commands: BuiltCommand[]): Promise<void> => {
+  await rest.put(
+    Routes.applicationGuildCommands(secrets.discord.clientId, secrets.discord.guildId),
+    {
+      body: commands
+    }
+  )
+}
+
+export const refreshSlashCommands = (): Promise<void> => {
+  return setSlashCommands(buildSlashCommands())
 }

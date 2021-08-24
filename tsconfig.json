@@ -27,6 +27,10 @@
   },
   "include": [
     "src",
-    "src/**/*.json"
+    "src/**/*.json",
+    "src/**/*.yaml"
+  ],
+  "hooks": [
+    "copy-files"
   ]
 }

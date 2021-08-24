@@ -1,10 +1,11 @@
 import startObs from "./obs"
 import startDiscord, { getGuildTextChannel } from "./discord"
-import config from "./config.json"
+import { secrets } from "./config"
 
-const serverName = config.meta.name
+const serverName = secrets.meta.name
 
 const start = async (): Promise<void> => {
+  console.log(`Bot startup at ${ new Date().toISOString() }`)
   const obs = await startObs()
   console.log("Started OBS")
   const bot = await startDiscord()
@@ -15,7 +16,7 @@ const start = async (): Promise<void> => {
 
   const validScenes = scenes.scenes.map(s => s.name)
 
-  const channel = await getGuildTextChannel(config.discord.channels.log)
+  const channel = await getGuildTextChannel(secrets.discord.channels.log)
   channel?.send(`[${ serverName }] started with **${ validScenes.length }** scenes.`)
 
   // console.log("Scene Options :", validScenes)
@@ -27,7 +28,7 @@ const start = async (): Promise<void> => {
       message.channel.send(`Set the scene to ${ scene }`)
 
       // Audit log for other discord input methods
-      // const logChannel = await getGuildTextChannel(config.discord.channels.log)
+      // const logChannel = await getGuildTextChannel(secrets.discord.channels.log)
       // logChannel?.send(`${ message.member?.displayName } set the scene for ${ serverName } to ${ scene }`)
 
     } else if (scene.startsWith("!scenes")) {
@@ -35,6 +36,14 @@ const start = async (): Promise<void> => {
     } else if (scene.startsWith("!ck")) {
       message.channel.send(`SBLControl on **${ serverName }** is listening.`)
     }
+  })
+
+  bot.on("interactionCreate", async interaction => {
+    if (!interaction.isCommand()) return
+
+    console.log("interaction :", interaction.options)
+
+    interaction.reply("Placeholder response")
   })
 
   const setScene = (scene: string): Promise<void> => {

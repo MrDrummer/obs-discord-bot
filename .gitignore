@@ -103,7 +103,6 @@ dist
 # TernJS port file
 .tern-port
 
-
 log/
 
 # Custom ignores
@@ -112,5 +111,5 @@ tmp
 
 .vscode
 
-config.json
+config.yaml
 secrets.json
