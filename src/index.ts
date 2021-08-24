@@ -43,7 +43,7 @@ const start = async (): Promise<void> => {
 
     console.log("interaction :", interaction.options)
 
-    interaction.reply("Placeholder response")
+    interaction.reply(JSON.stringify(interaction.options))
   })
 
   const setScene = (scene: string): Promise<void> => {
