@@ -2,7 +2,7 @@ import { CommandInteraction } from "discord.js"
 import { scene, slot } from "../common"
 import { config } from "../config"
 
-export default (interaction: CommandInteraction): void => {
+export default async (interaction: CommandInteraction): Promise<void> => {
   // console.log("interaction.options.data :", interaction.options.data)
   interaction.reply(JSON.stringify(interaction.options.data))
 
@@ -17,7 +17,7 @@ export default (interaction: CommandInteraction): void => {
   // getConfig.getTypeOfSceneFromScene()
 
   if (typeof selectedScene?.value === "string") {
-    scene.setSceneByArgument(selectedScene.value)
+    await scene.setSceneByArgument(selectedScene.value)
   }
 
   for (const slotArgument of selectedSlots) {
