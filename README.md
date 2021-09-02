@@ -22,6 +22,8 @@ If you need to restart the bot then from a terminal run `pm2 restart bot`, to ge
 
 You can safely exit the command prompt and the bot will continue to run. Running `pm2 list` will list the processes running. If `bot` isn't listed, then it isn't running (see set up step 7.)
 
+If you update the yaml config file, you'll need to run `yarn start` or `yarn copy` and then `pm2 restart bot` for it to use the new yaml config.
+
 ## Server restarts
 If the server is restarted for whatever reason, you'll need to go to the location of this repo and follow step 7.
 
