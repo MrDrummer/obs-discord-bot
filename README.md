@@ -6,7 +6,7 @@ This bot is designed to run on a server, next to OBS. This is ideal for situatio
 2. Clone this repo with git: `https://github.com/MrDrummer/obs-discord-bot.git`
 3. Assuming you don't already have node.js installed, download and install [NVM For Windows](https://github.com/coreybutler/nvm-windows). This allows easy switching between node.js versions. It must be Node 16 or greater.
 4. Open a command prompt, run `nvm install 16.7.0` and then `nvm use 16.7.0`. Validate it switched with `node -v` and it should respond with `16.7.0` (cmd prompt restart may be needed?)
-5. Run `npm install -g yarn typescript pm2`
+5. Run `npm install -g yarn typescript pm2 cpy-cli`
 6. Go to `src`, copy `config-template.json` to `config.json`. Edit the values.
 7. Navigate to the root of this repo within command prompt and run `yarn`. This will install all packages required to run this bot.
 8. `yarn start` will build and then start the bot with pm2. It will restart if it is already running.
