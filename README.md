@@ -54,7 +54,7 @@ OBS smooth transitions work between top level scenes, but not when switching sub
 The beauty of this script is that the choice is yours. You could have a fullscreen layout utilising a main slot and it'll work.
 
 ## How it works
-When switching a slot, the software essentially controls which sources are hidden.
+When switching a slot, the software essentially controls which sources are hidden. It'll hide all of the other sources under the selected slot other than the one you're showing.
 
 # Bot Configuration
 After cloning, copy & rename the `config-template.yaml` to `config.yaml`. Do the same for `config-template.json` to `config.json`. These two files are gitignored.
@@ -68,20 +68,35 @@ A configuration for the previously mentioned example would look like
 ```yaml
 sources:
   - arg: feeda
-    scene: FeedA
+    scene: SceneA
+    source: FeedA_Raw
     desc: Camera Feed A
   - arg: feedb
-    scene: FeedB
+    scene: SceneB
+    source: FeedB_Raw
     desc: Camera Feed B
 layouts:
   - arg: split
     scene: Split
     desc: "A 50/50 split utilising SlotA and SlotB."
+    slots:
+      - slota
+      - slotb
 slots:
   slota: SlotA
   slotb: SlotB
 ```
-<!-- The `desc` is the description that shows up in the Discord slash command. -->
+sources/layouts
+- `arg`: the key that gets entered when you enter the command in Discord. Lowercase. One word.
+- `scene`: The name of the source's fullscreen scene.
+- `desc` is the description that shows up in the Discord slash command.
+
+sources
+- `source`: The name of the source - for toggling within slots.
+
+layouts
+- `slots`: List of pre-configured slots that the layout shows.
+
 
 # Usage
 When the script is running, you will see the bot as online in the server list.

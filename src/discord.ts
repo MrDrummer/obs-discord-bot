@@ -83,24 +83,21 @@ export const buildSlashCommands = (disabledCameras?: string[]): BuiltCommand[] =
         .setDescription("Set the active scene.");
       [...config.sources, ...config.layouts].forEach(c => {
         if (disabledCameras && disabledCameras.includes(c.scene)) return
-        subcommand.addChoice(c.arg, c.scene)
+        subcommand.addChoice(c.arg, c.arg)
       })
       return subcommand
     })
-  Object.entries(config.slots).forEach(([key]) => {
+  Object.keys(config.slots).forEach(key => {
     slotBuilder
-      // slotBuilder.addSubcommand(sc => {
-      //   return sc.setName(key)
       .setDescription(`Interacts with the ${ key } slot.`)
       .addStringOption(option => {
         const subcommand = option.setName(key)
           .setDescription("The source to assign to the slot.")
         config.sources.forEach(s => {
-          subcommand.addChoice(s.arg, s.scene)
+          subcommand.addChoice(s.arg, s.arg)
         })
         return subcommand
       })
-    // })
   })
   const pingCommand = new SlashCommandBuilder()
     .setName("ping")

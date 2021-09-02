@@ -22,17 +22,13 @@ export const setScene = (scene: string): Promise<void> => {
   return obsSocket.send("SetCurrentScene", { "scene-name": scene })
 }
 
-export const setSourceHidden = async (source: string, hidden: boolean): Promise<void> => {
-  await obsSocket.send("SetSourceSettings", {
-    sourceName: source,
-    sourceSettings: {
-      visible: hidden
-    }
-  })
+interface CurrentScene {
+  messageId: string
+  status: "ok"
+  name: string
+  sources: ObsWebSocket.SceneItem[]
 }
 
-export const getSourceSettings = async (source: string): Promise<void> => {
-  await obsSocket.send("GetSourceSettings", {
-    sourceName: source
-  })
+export const getCurrentScene = (): Promise<CurrentScene> => {
+  return obsSocket.send("GetCurrentScene")
 }

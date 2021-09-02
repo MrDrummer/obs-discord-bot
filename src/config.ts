@@ -3,15 +3,23 @@ import YAML from "yaml"
 import fs from "fs"
 import path from "path"
 
-export interface SceneMapping {
+export interface SceneMappingBase {
   arg: string // What is put into the command
   scene: string // Name for OBS
   desc: string // Description displayed within Discord.
 }
 
+export interface SceneMappingSource extends SceneMappingBase {
+  source: string
+}
+
+export interface SceneMappingLayouts extends SceneMappingBase {
+  slots: string[]
+}
+
 export interface Config {
-  sources: SceneMapping[]
-  layouts: SceneMapping[]
+  sources: SceneMappingSource[]
+  layouts: SceneMappingLayouts[]
   slots: Record<string, string>
 }
 
