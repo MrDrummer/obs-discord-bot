@@ -1,6 +1,7 @@
 import startObs from "./obs"
 import startDiscord, { getGuildTextChannel } from "./discord"
 import { secrets } from "./config"
+import { commands } from "./commands"
 
 const serverName = secrets.meta.name
 
@@ -21,6 +22,7 @@ const start = async (): Promise<void> => {
 
   // console.log("Scene Options :", validScenes)
 
+  /*
   bot.on("messageCreate", async message => {
     const scene = message.content
     if (validScenes.includes(scene)) {
@@ -37,19 +39,17 @@ const start = async (): Promise<void> => {
       message.channel.send(`SBLControl on **${ serverName }** is listening.`)
     }
   })
+  */
 
-  bot.on("interactionCreate", async interaction => {
+  bot.on("interactionCreate", async (interaction): Promise<void> => {
     if (!interaction.isCommand()) return
 
-    console.log("interaction :", interaction.options)
+    // console.log("interaction :", interaction.options.data)
 
-    interaction.reply(JSON.stringify(interaction.options))
+    // console.log("interaction.command, interaction.commandId, interaction.commandName :", interaction.command, interaction.commandId, interaction.commandName)
+    await commands[interaction.commandName]?.(interaction)
+    return
   })
-
-  const setScene = (scene: string): Promise<void> => {
-    return obs.send("SetCurrentScene", { "scene-name": scene })
-  }
 }
 
 start()
-// foo

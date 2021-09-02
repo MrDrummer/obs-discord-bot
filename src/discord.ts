@@ -78,6 +78,15 @@ export const buildSlashCommands = (disabledCameras?: string[]): BuiltCommand[] =
   const slotBuilder = new SlashCommandBuilder()
     .setName("slot")
     .setDescription("Changes a slots's source.")
+    .addStringOption(option => {
+      const subcommand = option.setName("scene")
+        .setDescription("Set the active scene.");
+      [...config.sources, ...config.layouts].forEach(c => {
+        if (disabledCameras && disabledCameras.includes(c.scene)) return
+        subcommand.addChoice(c.arg, c.scene)
+      })
+      return subcommand
+    })
   Object.entries(config.slots).forEach(([key]) => {
     slotBuilder
       // slotBuilder.addSubcommand(sc => {

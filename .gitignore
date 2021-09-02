@@ -112,4 +112,5 @@ tmp
 .vscode
 
 config.yaml
+*.config.yaml
 secrets.json
