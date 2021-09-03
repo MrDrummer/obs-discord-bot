@@ -27,8 +27,7 @@
     "typescript": "^4.3.5"
   },
   "scripts": {
-    "devstart": "yarn copy && tsc && node dist/index.js",
-    "start": "yarn copy && tsc && (pm2 restart bot --no-autorestart || pm2 start dist/index.js --name=\"bot\" --no-autorestart) && pm2 logs bot",
-    "copy": "cpy src/**/*.yaml dist"
+    "devstart": "tsc && node dist/index.js",
+    "start": "tsc && (pm2 restart bot --no-autorestart || pm2 start dist/index.js --name=\"bot\" --no-autorestart) && pm2 logs bot"
   }
 }

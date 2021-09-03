@@ -1,4 +1,6 @@
-import secrets from "./secrets.json"
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const secrets = require("../secrets.json")
+// import secrets from "../secrets.json"
 import YAML from "yaml"
 import fs from "fs"
 import path from "path"
@@ -23,7 +25,7 @@ export interface Config {
   slots: Record<string, string>
 }
 
-const file = fs.readFileSync(path.join(__dirname, "./config.yaml"), "utf8")
+const file = fs.readFileSync(path.join(__dirname, "../config.yaml"), "utf8")
 const config: Config = YAML.parse(file)
 
 export {
