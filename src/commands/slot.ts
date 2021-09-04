@@ -1,16 +1,18 @@
 import { CommandInteraction } from "discord.js"
-import { scene, slot } from "../common"
+import { scene, slot, yargs, reply } from "../common"
 import { config } from "../config"
 
-export default async (interaction: CommandInteraction): Promise<void> => {
+export default async (args: yargs.CommandArgs, interaction?: CommandInteraction): Promise<void> => {
   // console.log("interaction.options.data :", interaction.options.data)
 
   const validSlots = Object.keys(config.slots)
 
-  const selectedScene = interaction.options.data.find(o => o.name === "scene")
-  const selectedSlots = interaction.options.data.filter(o => validSlots.includes(o.name))
+  console.log("args :", args)
 
-  // console.log("selectedSlots :", selectedSlots)
+  const selectedScene = Object.entries(args.args).find(a => a[0] === "scene")?.[1]
+  const selectedSlots = Object.entries(args.args).filter(s => validSlots.includes(s[0])).map(s => ({ name: s[0], value: s[1] }))
+
+  console.log("selectedSlots :", selectedSlots)
 
   // const currentConfig = await getConfig.getConfigForCurrentScene()
   // getConfig.getTypeOfSceneFromScene()
@@ -26,10 +28,15 @@ export default async (interaction: CommandInteraction): Promise<void> => {
       if (typeof slotSource !== "string") continue
       await slot.setSlotSource(slotName, slotSource)
     }
-    interaction.reply(interaction.options.data.map(o => `**${ o.name }:** ${ o.value }`).join("\n") || "No arguments provided.")
+
+    const response = []
+    if (selectedScene) response.push(`**scene:** ${ selectedScene }`)
+    response.push(...selectedSlots.map(o => `**${ o.name }:** ${ o.value }`))
+
+    reply(args, response.join("\n") || "No arguments provided.", interaction)
   } catch (e) {
     console.error("Error :", e)
-    interaction.reply("There was an error setting the scene or slots.")
+    reply(args, "There was an error setting the scene or slots.", interaction)
   }
 
   // handle slot assignments

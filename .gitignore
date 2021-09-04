@@ -114,3 +114,4 @@ tmp
 config.yaml
 *.config.yaml
 secrets.json
+*.secrets.json

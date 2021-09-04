@@ -1,5 +1,7 @@
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-const secrets = require("../secrets.json")
+const secrets: Secrets = require("../secrets.json")
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const subscriber = require("../subscriber.secrets.json")
 // import secrets from "../secrets.json"
 import YAML from "yaml"
 import fs from "fs"
@@ -25,10 +27,35 @@ export interface Config {
   slots: Record<string, string>
 }
 
+export interface Secrets {
+  discord: {
+    token: string
+    clientId: string
+    guildId: string
+    channels: {
+      main: string
+      log: string
+    }
+  }
+  obs: {
+    hostname: string
+    port: string
+    password: string
+  }
+  meta: {
+    name: string
+    notes: string
+  }
+  pubsub: {
+    subscriber: string
+  }
+}
+
 const file = fs.readFileSync(path.join(__dirname, "../config.yaml"), "utf8")
 const config: Config = YAML.parse(file)
 
 export {
   secrets,
-  config
+  config,
+  subscriber
 }
