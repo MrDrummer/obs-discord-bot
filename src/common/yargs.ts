@@ -16,11 +16,13 @@ export const interactionToYargs = (interaction: CommandInteraction): CommandArgs
 
   return {
     source: "discord",
-    args: yargsArgs as Arguments
+    args: yargsArgs as Arguments,
+    identity: interaction.user.username
   }
 }
 
 export interface CommandArgs {
   source: "discord" | "external"
   args: Arguments
+  identity: string
 }

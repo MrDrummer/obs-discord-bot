@@ -1,14 +1,16 @@
+dieScene: name of source for emergency cuts
 sources:
   - arg: keyword that will be auto-completed in the command. lowecase, single word.
     scene: name of the scene in OBS. Case sensitive.
+    source: name of the raw source (for slots)
     desc: description to show in discord autocomplete.
 layouts:
   - arg: keyword that will be auto-completed in the command. lowecase, single word.
     scene: name of the scene in OBS. Case sensitive.
     desc: description to show in discord autocomplete.
     slots:
+      - key of slots map below
       - bigbox
-      - mid
 slots:
   argument: OBS name. example below
   bigbox: S_BIGBOX

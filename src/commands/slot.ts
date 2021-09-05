@@ -7,19 +7,20 @@ export default async (args: yargs.CommandArgs, interaction?: CommandInteraction)
 
   const validSlots = Object.keys(config.slots)
 
-  console.log("args :", args)
+  // console.log("args :", args)
 
   const selectedScene = Object.entries(args.args).find(a => a[0] === "scene")?.[1]
   const selectedSlots = Object.entries(args.args).filter(s => validSlots.includes(s[0])).map(s => ({ name: s[0], value: s[1] }))
 
-  console.log("selectedSlots :", selectedSlots)
+  // console.log("selectedScene :", selectedScene)
+  // console.log("selectedSlots :", selectedSlots)
 
   // const currentConfig = await getConfig.getConfigForCurrentScene()
   // getConfig.getTypeOfSceneFromScene()
 
   try {
-    if (typeof selectedScene?.value === "string") {
-      await scene.setSceneByArgument(selectedScene.value)
+    if (selectedScene) {
+      await scene.setSceneByArgument(selectedScene)
     }
 
     for (const slotArgument of selectedSlots) {

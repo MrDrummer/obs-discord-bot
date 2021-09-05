@@ -3,6 +3,9 @@ import { REST } from "@discordjs/rest"
 import { APIApplicationCommandOption, Routes } from "discord-api-types/v9"
 import { secrets, config } from "./config"
 import { SlashCommandBuilder } from "@discordjs/builders"
+import { yargs } from "./common"
+import { commands } from "./commands"
+
 let botClient: Client
 
 interface BuiltCommand {
@@ -50,6 +53,15 @@ export default (): Promise<Client> => {
 
     client.on("error", e => {
       console.error("Discord had an error:", e)
+    })
+
+    client.on("interactionCreate", async (interaction): Promise<void> => {
+      if (!interaction.isCommand()) return
+
+      const result = yargs.interactionToYargs(interaction)
+
+      await commands[interaction.commandName]?.(result, interaction)
+      return
     })
   })
 }
@@ -102,7 +114,10 @@ export const buildSlashCommands = (disabledCameras?: string[]): BuiltCommand[] =
   const pingCommand = new SlashCommandBuilder()
     .setName("ping")
     .setDescription("Returns ping time")
-  return [sceneBuilder, slotBuilder, pingCommand].map(c => c.toJSON())
+  const dieCommand = new SlashCommandBuilder()
+    .setName("die")
+    .setDescription("Cuts to the hold screen")
+  return [sceneBuilder, slotBuilder, pingCommand, dieCommand].map(c => c.toJSON())
 }
 
 export const setSlashCommands = async (commands: BuiltCommand[]): Promise<void> => {

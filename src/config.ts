@@ -22,6 +22,7 @@ export interface SceneMappingLayouts extends SceneMappingBase {
 }
 
 export interface Config {
+  dieScene: string
   sources: SceneMappingSource[]
   layouts: SceneMappingLayouts[]
   slots: Record<string, string>
