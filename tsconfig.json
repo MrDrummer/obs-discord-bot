@@ -29,8 +29,5 @@
     "src",
     "src/**/*.json",
     "src/**/*.yaml"
-  ],
-  "hooks": [
-    "copy-files"
   ]
 }
