@@ -82,8 +82,7 @@ export const buildSlashCommands = (disabledCameras?: string[]): BuiltCommand[] =
     .setName("sc")
     .setDescription("Set the active scene.");
   [...config.sources, ...config.layouts].forEach(c => {
-    if (disabledCameras && disabledCameras.includes(c.scene)) return
-    if ((disabledCameras && disabledCameras.includes(c.scene))) return
+    if (c.hideScene || (disabledCameras && disabledCameras.includes(c.scene))) return
     sceneBuilder.addSubcommand(sc => {
       return sc.setName(c.arg)
         .setDescription(c.desc)
@@ -96,7 +95,7 @@ export const buildSlashCommands = (disabledCameras?: string[]): BuiltCommand[] =
       const subcommand = option.setName("scene")
         .setDescription("Set the active scene.");
       [...config.sources, ...config.layouts].forEach(c => {
-        if (disabledCameras && disabledCameras.includes(c.scene)) return
+        if (c.hideScene || (disabledCameras && disabledCameras.includes(c.scene))) return
         subcommand.addChoice(c.arg, c.arg)
       })
       return subcommand
@@ -108,6 +107,7 @@ export const buildSlashCommands = (disabledCameras?: string[]): BuiltCommand[] =
         const subcommand = option.setName(key)
           .setDescription("The source to assign to the slot.")
         config.sources.forEach(s => {
+          if (s.hideSlot) return
           subcommand.addChoice(s.arg, s.arg)
         })
         return subcommand
