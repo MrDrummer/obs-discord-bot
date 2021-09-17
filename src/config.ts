@@ -11,6 +11,8 @@ export interface SceneMappingBase {
   arg: string // What is put into the command
   scene: string // Name for OBS
   desc: string // Description displayed within Discord.
+  hideScene: boolean // Hide the source from scene selection - only show in slots
+  hideSlot: boolean // Hide the source from slot selection - only show in scenes
 }
 
 export interface SceneMappingSource extends SceneMappingBase {

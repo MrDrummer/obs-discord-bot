@@ -12,6 +12,7 @@ interface BuiltCommand {
   name: string
   description: string
   options: APIApplicationCommandOption[]
+  default_permission?: boolean
 }
 
 const rest = new REST({ version: "9" }).setToken(secrets.discord.token)
@@ -82,6 +83,7 @@ export const buildSlashCommands = (disabledCameras?: string[]): BuiltCommand[] =
     .setDescription("Set the active scene.");
   [...config.sources, ...config.layouts].forEach(c => {
     if (disabledCameras && disabledCameras.includes(c.scene)) return
+    if ((disabledCameras && disabledCameras.includes(c.scene))) return
     sceneBuilder.addSubcommand(sc => {
       return sc.setName(c.arg)
         .setDescription(c.desc)
@@ -117,7 +119,12 @@ export const buildSlashCommands = (disabledCameras?: string[]): BuiltCommand[] =
   const dieCommand = new SlashCommandBuilder()
     .setName("die")
     .setDescription("Cuts to the hold screen")
-  return [sceneBuilder, slotBuilder, pingCommand, dieCommand].map(c => c.toJSON())
+  return [
+    sceneBuilder,
+    slotBuilder,
+    pingCommand,
+    dieCommand
+  ].map(c => c.toJSON())
 }
 
 export const setSlashCommands = async (commands: BuiltCommand[]): Promise<void> => {

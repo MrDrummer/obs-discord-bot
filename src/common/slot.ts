@@ -20,6 +20,6 @@ export const setSlotSource = async (slotArgument: string, sourceArgument: string
   // console.log("allOtherSources :", allOtherSources)
   await Promise.all([
     setSceneSourceVisibility(slotScene, sourceConfig.source, true),
-    allOtherSources.map(s => setSceneSourceVisibility(slotScene, s.source, false))
+    allOtherSources.filter(s => !s.hideSlot).map(s => setSceneSourceVisibility(slotScene, s.source, false))
   ])
 }
