@@ -71,10 +71,12 @@ sources:
     scene: SceneA
     source: FeedA_Raw
     desc: Camera Feed A
+    hideScene: true
   - arg: feedb
     scene: SceneB
     source: FeedB_Raw
     desc: Camera Feed B
+    hideSlot: true
 layouts:
   - arg: split
     scene: Split
@@ -89,7 +91,9 @@ slots:
 sources/layouts
 - `arg`: the key that gets entered when you enter the command in Discord. Lowercase. One word.
 - `scene`: The name of the source's fullscreen scene.
-- `desc` is the description that shows up in the Discord slash command.
+- `desc`: The description that shows up in the Discord slash command.
+- `hideScene`: Hidden from listing as a scene within `/sc` and `/slot scene:` commands
+- `hideSlot`: Hidden from listing as a valid slot within `/slot` commands
 
 sources
 - `source`: The name of the source - for toggling within slots.

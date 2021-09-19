@@ -82,8 +82,10 @@ export const buildSlashCommands = (disabledCameras?: string[]): BuiltCommand[] =
     .setName("sc")
     .setDescription("Set the active scene.");
   [...config.sources, ...config.layouts].forEach(c => {
+    // console.log("sc :", c.arg)
     if (c.hideScene || (disabledCameras && disabledCameras.includes(c.scene))) return
     sceneBuilder.addSubcommand(sc => {
+      // console.log("sc arg :", c.arg)
       return sc.setName(c.arg)
         .setDescription(c.desc)
     })
