@@ -28,4 +28,5 @@ server.post("/api/command", authenticate, process)
 
 export default (): void => {
   server.listen(secrets.http.port)
+  console.log("Listening on port", secrets.http.port)
 }
