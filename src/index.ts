@@ -1,6 +1,7 @@
 import startObs from "./obs"
 import startDiscord, { getGuildTextChannel } from "./discord"
 import startPubSub from "./pubsub"
+import startHttp from "./http"
 import { secrets } from "./config"
 
 const serverName = secrets.meta.name
@@ -14,6 +15,10 @@ const start = async (): Promise<void> => {
   if (secrets.pubsub?.subscriber) {
     startPubSub()
     console.log("Started PubSub")
+  }
+  if (secrets.http.port) {
+    startHttp()
+    console.log("Started HTTP Server")
   }
 
   const scenes = await obs.send("GetSceneList")

@@ -52,13 +52,29 @@ export interface Secrets {
   pubsub: {
     subscriber: string
   }
+  http: {
+    port: number
+  }
+}
+
+export interface UserToken {
+  username: string
+  token: string
+}
+
+export interface UserTokenConfig {
+  users: UserToken[]
 }
 
 const file = fs.readFileSync(path.join(__dirname, "../config.yaml"), "utf8")
 const config: Config = YAML.parse(file)
 
+const tokens = fs.readFileSync(path.join(__dirname, "../user.tokens.yaml"), "utf8")
+const users: UserTokenConfig = YAML.parse(tokens)
+
 export {
   secrets,
   config,
-  subscriber
+  subscriber,
+  users
 }

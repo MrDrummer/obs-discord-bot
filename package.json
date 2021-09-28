@@ -12,11 +12,14 @@
     "axios": "0.21.0",
     "discord-api-types": "0.22.0",
     "discord.js": "13.1.0",
+    "express": "^4.17.1",
     "obs-websocket-js": "4.0.3",
-    "yargs-parser": "20.2.9",
-    "yaml": "1.10.2"
+    "parse-bearer-token": "^1.0.1",
+    "yaml": "1.10.2",
+    "yargs-parser": "20.2.9"
   },
   "devDependencies": {
+    "@types/express": "4.17.13",
     "@types/node": "16.9.2",
     "@types/yargs-parser": "20.2.1",
     "@typescript-eslint/eslint-plugin": "4.31.1",

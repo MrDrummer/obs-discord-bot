@@ -126,3 +126,23 @@ Now say we were look at Split, and wanted to switch back to a fullscreen shot wh
 /slot scene:feeda slota:feedb slotb:feeda
 
 This would switch to `FeedA` and then switch the slots around. `SlotA` on the left would be `FeedB` and `SlotB` on the right would be `FeedA`.
+
+# PubSub
+An option if you do not want to port forward and are happy with a 5-10 second delay between pushing the button and scene switch.
+
+This is due to how GCP PubSub PULL works. Essentially it polls the PubSub servers asking if there are any events to process. This results in it being slow.
+
+You'll at the very least need a `subscriber.secrets.json` file with `{}` in order for the bot to start.
+
+# Http
+`user.tokens.yaml` is the config file for Authorising http requests.
+
+```yaml
+users:
+  - username: MrDrummer
+    token: mytokengoeshere
+```
+
+This will utilise the `Authorization` header.
+
+You will also need to port forward in order for this to work- port is entered in `secrets.json` within `http.port`.

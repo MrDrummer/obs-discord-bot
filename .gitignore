@@ -115,3 +115,5 @@ config.yaml
 *.config.yaml
 secrets.json
 *.secrets.json
+tokens.yaml
+*.tokens.yaml
