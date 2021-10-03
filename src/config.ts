@@ -25,6 +25,8 @@ export interface SceneMappingLayouts extends SceneMappingBase {
 
 export interface Config {
   dieScene: string
+  allowStart: boolean
+  allowStop: boolean
   sources: SceneMappingSource[]
   layouts: SceneMappingLayouts[]
   slots: Record<string, string>

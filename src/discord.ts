@@ -78,6 +78,18 @@ export const getGuildTextChannel = async (channelId: string): Promise<(Channel &
 }
 // console.log("config :", config)
 export const buildSlashCommands = (disabledCameras?: string[]): BuiltCommand[] => {
+  const streamBuilder = new SlashCommandBuilder()
+    .setName("stream")
+    .setDescription("Starts or Stops the stream")
+  streamBuilder.addSubcommand(sc => {
+    return sc.setName("start")
+      .setDescription("Starts the stream")
+  })
+  streamBuilder.addSubcommand(sc => {
+    return sc.setName("stop")
+      .setDescription("Stops the stream")
+  })
+
   const sceneBuilder = new SlashCommandBuilder()
     .setName("sc")
     .setDescription("Set the active scene.");
@@ -125,7 +137,8 @@ export const buildSlashCommands = (disabledCameras?: string[]): BuiltCommand[] =
     sceneBuilder,
     slotBuilder,
     pingCommand,
-    dieCommand
+    dieCommand,
+    streamBuilder
   ].map(c => c.toJSON())
 }
 

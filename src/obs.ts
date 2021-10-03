@@ -32,3 +32,11 @@ interface CurrentScene {
 export const getCurrentScene = (): Promise<CurrentScene> => {
   return obsSocket.send("GetCurrentScene")
 }
+
+export const startStream = (): Promise<void> => {
+  return obsSocket.send("StartStreaming", {})
+}
+
+export const endStream = (): Promise<void> => {
+  return obsSocket.send("StopStreaming")
+}
