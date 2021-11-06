@@ -1,5 +1,5 @@
 import { config, SceneMappingLayouts, SceneMappingSource } from "../config"
-import { getCurrentScene } from "../obs"
+import { getCurrentScene } from "../obs/socket"
 
 export const getAllScenes = (): (SceneMappingLayouts | SceneMappingSource)[] => {
   return [...config.sources, ...config.layouts]
@@ -42,6 +42,15 @@ export const getTypeOfSceneFromArg = (arg: string): "source" | "layout" | undefi
 export const getConfigForCurrentScene = async (): Promise<SceneMappingLayouts | SceneMappingSource | undefined> => {
   const currentScene = await getCurrentScene()
   return getAllScenes().find(s => s.scene === currentScene.name)
+}
+
+export const getAudioSources = (): string[] => {
+  const sceneAudio = getAllScenes().filter(sc => sc.audio).map(a => a.audio)
+  return [...config.globalAudio, ...sceneAudio].filter(onlyUnique)
+}
+
+const onlyUnique = (value: string | number, index: number, self: (string | number)[]): boolean => {
+  return self.indexOf(value) === index
 }
 
 export const slots = config.slots

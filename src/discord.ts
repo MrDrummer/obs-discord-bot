@@ -102,6 +102,7 @@ export const buildSlashCommands = (disabledCameras?: string[]): BuiltCommand[] =
         .setDescription(c.desc)
     })
   })
+
   const slotBuilder = new SlashCommandBuilder()
     .setName("slot")
     .setDescription("Changes a slots's source.")
@@ -127,18 +128,75 @@ export const buildSlashCommands = (disabledCameras?: string[]): BuiltCommand[] =
         return subcommand
       })
   })
-  const pingCommand = new SlashCommandBuilder()
-    .setName("ping")
-    .setDescription("Returns ping time")
+
+  const audioCommand = new SlashCommandBuilder()
+    .setName("audio")
+    .setDescription("Gets or sets an audio source.")
+  audioCommand.addSubcommand(audio => {
+    const list = audio.setName("list")
+      .setDescription("Lists valid audio channel names for the current or specified scene")
+    // list.addStringOption(option => {
+    //   const scenesSubcommand = option.setName("scene")
+    //     .setDescription("The scene to list audio sources from.");
+    //   [...config.sources, ...config.layouts].forEach(c => {
+    //     // console.log("sc :", c.arg)
+    //     scenesSubcommand.addChoice(c.arg, c.arg)
+    //   })
+    //   return scenesSubcommand
+    // })
+    return list
+  });
+
+  ["set", "add", "sub"].forEach(subCmd => {
+    audioCommand.addSubcommand(audio => {
+      const cmd = audio.setName(subCmd)
+        .setDescription("Set the audo channel to a %. Maps to -100dB to 0dB. 60% (40dB) is typical.")
+      cmd.addStringOption(set => {
+        return set.setName("source")
+          .setDescription("The audio source to change the dB value for.")
+          .setRequired(true)
+      })
+      cmd.addIntegerOption(set => {
+        return set.setName("value")
+          .setDescription("The audio % value")
+          .setRequired(true)
+      })
+      return cmd
+    })
+
+  })
+
+
+  const muteCommand = new SlashCommandBuilder()
+    .setName("mute")
+    .setDescription("Mutes an audio source.")
+  muteCommand.addStringOption(mute => {
+    return mute.setName("source")
+      .setDescription("The audio source to mute")
+      .setRequired(true)
+  })
+
+  const unmuteCommand = new SlashCommandBuilder()
+    .setName("unmute")
+    .setDescription("Unmutes and audio source.")
+  unmuteCommand.addStringOption(unmute => {
+    return unmute.setName("source")
+      .setDescription("The audio source to unmute")
+      .setRequired(true)
+  })
+
   const dieCommand = new SlashCommandBuilder()
     .setName("die")
     .setDescription("Cuts to the hold screen")
+
   return [
     sceneBuilder,
     slotBuilder,
-    pingCommand,
+    audioCommand,
     dieCommand,
-    streamBuilder
+    streamBuilder,
+    muteCommand,
+    unmuteCommand
   ].map(c => c.toJSON())
 }
 

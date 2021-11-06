@@ -1,7 +1,7 @@
 import { CommandInteraction } from "discord.js"
 import { yargs, reply } from "../common"
 import { config } from "../config"
-import { startStream, endStream } from "../obs"
+import { startStream, endStream } from "../obs/socket"
 
 export default async (args: yargs.CommandArgs, interaction?: CommandInteraction): Promise<void> => {
   try {

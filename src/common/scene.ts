@@ -1,4 +1,4 @@
-import { setScene } from "../obs"
+import { setScene } from "../obs/socket"
 import { getSceneConfigByArgument } from "./config"
 
 export const setSceneByArgument = async (name: string): Promise<void> => {

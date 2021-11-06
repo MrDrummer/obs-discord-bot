@@ -1,4 +1,4 @@
-import startObs from "./obs"
+import startObs from "./obs/socket"
 import startDiscord, { getGuildTextChannel } from "./discord"
 import startPubSub from "./pubsub"
 import startHttp from "./http"
