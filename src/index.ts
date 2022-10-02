@@ -21,7 +21,7 @@ const start = async (): Promise<void> => {
     console.log("Started HTTP Server")
   }
 
-  const scenes = await obs.send("GetSceneList")
+  const scenes = await obs.call("GetSceneList")
   const validScenes = scenes.scenes.map(s => s.name)
 
   const channel = await getGuildTextChannel(secrets.discord.channels.log)
